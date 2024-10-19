@@ -20,6 +20,8 @@ public class Maze
     private int _currX = 1;
     private int _currY = 1;
 
+    private InvalidOperationException error = new InvalidOperationException("Can't go that way!");
+
     public Maze(Dictionary<ValueTuple<int, int>, bool[]> mazeMap)
     {
         _mazeMap = mazeMap;
@@ -33,6 +35,15 @@ public class Maze
     public void MoveLeft()
     {
         // FILL IN CODE
+                if (_currX > 1 && _mazeMap.TryGetValue((_currX, _currY), out bool[] movements)){
+            if(movements[0]){
+                _currX = _currX-1;
+            }else{
+                throw error;
+            }
+        }else{
+            throw error;
+        }
     }
 
     /// <summary>
@@ -42,6 +53,15 @@ public class Maze
     public void MoveRight()
     {
         // FILL IN CODE
+               if (_currX >= 1&& _mazeMap.TryGetValue((_currX, _currY), out bool[] movements)){
+            if(movements[1]){
+                _currX = _currX+1;
+            }else{
+                throw error;
+            }
+        }else{
+            throw error;
+        }
     }
 
     /// <summary>
@@ -51,6 +71,15 @@ public class Maze
     public void MoveUp()
     {
         // FILL IN CODE
+            if (_currY > 1&& _mazeMap.TryGetValue((_currX, _currY), out bool[] movements)){
+            if(movements[2]){
+                _currY = _currY-1;
+            }else{
+                throw error;
+            }
+        }else{
+            throw error;
+        }
     }
 
     /// <summary>
@@ -60,6 +89,15 @@ public class Maze
     public void MoveDown()
     {
         // FILL IN CODE
+                if (_currY >= 1&& _mazeMap.TryGetValue((_currX, _currY), out bool[] movements)){
+            if(movements[3]){
+                _currY = _currY+1;
+            }else{
+                throw error;
+            }
+        }else{
+            throw error;
+        }
     }
 
     public string GetStatus()

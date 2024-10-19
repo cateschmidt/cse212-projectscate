@@ -22,7 +22,23 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var wordGroup = new HashSet<string>(words);
+        var newPairs = new List<string>();
+        
+        foreach(var word in words)
+        {
+            var reverseResult = new string(word.Reverse().ToArray());
+            if (wordGroup.Contains(reverseResult))
+            {
+                newPairs.Add($"{word} & {reverseResult}");
+            }
+            else
+            {
+                wordGroup.Remove(word);
+            }
+
+        }  
+        return newPairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +59,16 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degreeTitle = fields[3];
+
+            if(degrees.ContainsKey(degreeTitle))
+            {
+                degrees[degreeTitle]++;
+            }
+            else
+            {
+                degrees[degreeTitle] = 1;
+            }
         }
 
         return degrees;
@@ -67,7 +93,21 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+       word1 = word1.Replace(" ","").ToLower();
+        word2 = word2.Replace(" ","").ToLower();
+
+        if(word1.Length != word2.Length) return false;
+
+        var word1Array = word1.ToCharArray();
+        var word2Array = word2.ToCharArray();
+
+        Array.Sort(word1Array);
+        Array.Sort(word2Array);
+
+        word1 = new string(word1Array);
+        word2 = new string(word2Array);
+
+        return word1 == word2;
     }
 
     /// <summary>
