@@ -15,7 +15,14 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        // check to see if n is less than or equal to 0
+        // if it is, return 0
+        if(n <= 0)
+        {
+            return 0;
+        }
+        // recursive case: sum 1^2 + 2^2 + 3^2 + ... + n^2
+        return (n * n) + SumSquaresRecursive(n-1);
     }
 
     /// <summary>
@@ -40,6 +47,19 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        // If we reach desired string length, add the permutuation
+        if (word.Length == size)
+        {
+            results.Add(word);
+            // desired result, exit program
+            return;
+        }
+        // Loop through each letter in available letters
+        for (int i = 0; i < letters.Length; i++)
+        {
+            // make a recursive call of remaining letters
+            PermutationsChoose(results, letters.Remove(i, 1), size, word + letters[i]);
+        }
     }
 
     /// <summary>
@@ -86,6 +106,12 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
+        remember ??= new Dictionary<int, decimal>();
+
+        if(remember == null)
+         remember = new Dictionary<int, decimal>();
+
+
         // Base Cases
         if (s == 0)
             return 0;
@@ -97,9 +123,15 @@ public static class Recursion
             return 4;
 
         // TODO Start Problem 3
+        if(remember.ContainsKey(s))
+            return remember[s];
 
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        
+        // commit to memory for future use
+        remember[s] = ways;
+        
         return ways;
     }
 
@@ -119,6 +151,26 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+          // Base case: if no more '*' in pattern, add the current pattern to results
+    if (!pattern.Contains('*'))
+    {
+        results.Add(pattern);
+        return;
+    }
+
+    // Recursive case: Replace the first '*' with '0' and '1', and recurse
+    WildcardBinary(pattern.ReplaceFirst('*', '0'), results);
+    WildcardBinary(pattern.ReplaceFirst('*', '1'), results);
+}
+
+// Extension method to replace only the first occurrence of a character
+public static string ReplaceFirst(this string text, char search, char replace)
+{
+    int pos = text.IndexOf(search);
+    if (pos == -1)
+        return text;
+    return text.Substring(0, pos) + replace + text.Substring(pos + 1);
+
     }
 
     /// <summary>
